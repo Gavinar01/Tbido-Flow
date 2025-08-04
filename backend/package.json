@@ -1,29 +1,30 @@
 {
-  "name": "tbido-flow-backend",
+  "name": "venue-reservation-backend",
   "version": "1.0.0",
-  "description": "Backend for Tbido Flow application using Express.js and MongoDB",
+  "description": "Backend for Venue Reservation System",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "seed": "node seed.js"
   },
   "dependencies": {
     "express": "^4.18.2",
     "mongoose": "^7.5.0",
     "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
     "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^9.0.2",
-    "dotenv": "^16.3.1"
+    "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
   },
   "keywords": [
-    "express",
+    "venue",
+    "reservation",
     "mongodb",
-    "nodejs",
-    "api"
+    "express"
   ],
-  "author": "Tbido Flow Team",
+  "author": "Venue Reservation System",
   "license": "MIT"
 }
