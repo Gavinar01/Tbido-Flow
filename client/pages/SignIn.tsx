@@ -71,7 +71,7 @@ export default function SignIn() {
       <header className="w-full px-4 py-3 sm:px-6 sm:py-4">
         <div className="flex items-center justify-center sm:justify-start gap-2">
           <img
-            src="https://cdn.builder.io/api/v1/image/assets%2F2fe4f7fd04a545f08056b89b3f633e83%2Fd6db581a27c74d93a3adde635d94c3cf?format=webp&width=800"
+            src="https://cdn.builder.io/api/v1/image/assets%2F2fe4f7fd04a545f08056b89b3f633e83%2Fdba04484f1fb4da0949c0f8e5a34c75b?format=webp&width=800"
             alt="Flow Logo"
             className="h-7 w-7 sm:h-8 sm:w-8"
           />
@@ -87,7 +87,7 @@ export default function SignIn() {
           <div className="text-center mb-8">
             <h1 className="text-2xl sm:text-3xl font-bold text-foreground leading-tight mb-3">
               Book Your Perfect
-              <span className="text-primary block">Venue Space</span>
+              <span className="block" style={{color: '#C94E5D'}}>Venue Space</span>
             </h1>
             <p className="text-sm sm:text-base text-muted-foreground mb-6">
               Reserve meeting rooms and event spaces instantly
@@ -96,22 +96,22 @@ export default function SignIn() {
             {/* Compact Features for Mobile */}
             <div className="grid grid-cols-3 gap-3 mb-6">
               <div className="text-center">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-primary/10 flex items-center justify-center mx-auto mb-1">
-                  <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center mx-auto mb-1" style={{backgroundColor: '#C94E5D20'}}>
+                  <Calendar className="h-4 w-4 sm:h-5 sm:w-5" style={{color: '#C94E5D'}} />
                 </div>
                 <p className="text-xs sm:text-sm font-medium text-foreground">8AM-5PM</p>
               </div>
 
               <div className="text-center">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-primary/10 flex items-center justify-center mx-auto mb-1">
-                  <Users className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center mx-auto mb-1" style={{backgroundColor: '#C94E5D20'}}>
+                  <Users className="h-4 w-4 sm:h-5 sm:w-5" style={{color: '#C94E5D'}} />
                 </div>
                 <p className="text-xs sm:text-sm font-medium text-foreground">Max 20</p>
               </div>
 
               <div className="text-center">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-primary/10 flex items-center justify-center mx-auto mb-1">
-                  <Building2 className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center mx-auto mb-1" style={{backgroundColor: '#C94E5D20'}}>
+                  <Building2 className="h-4 w-4 sm:h-5 sm:w-5" style={{color: '#C94E5D'}} />
                 </div>
                 <p className="text-xs sm:text-sm font-medium text-foreground">Instant</p>
               </div>
@@ -175,31 +175,6 @@ export default function SignIn() {
                   </div>
 
                   <div className="space-y-3">
-                    <div className="grid grid-cols-2 gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="text-xs"
-                        onClick={() => {
-                          setEmail("user@test.com");
-                          setPassword("test123");
-                        }}
-                      >
-                        Test User
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="text-xs"
-                        onClick={() => {
-                          setEmail("admin@venuebook.com");
-                          setPassword("admin123");
-                        }}
-                      >
-                        Admin Test
-                      </Button>
-                    </div>
-
                     <Link to="/admin/signin">
                       <Button
                         variant="outline"

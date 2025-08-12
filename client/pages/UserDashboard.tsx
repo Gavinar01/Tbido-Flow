@@ -92,7 +92,7 @@ export default function UserDashboard() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-purple-50 flex items-center justify-center">
         <div className="text-center">
-          <Calendar className="h-12 w-12 text-primary mx-auto mb-4 animate-pulse" />
+          <Calendar className="h-12 w-12 mx-auto mb-4 animate-pulse" style={{color: '#C94E5D'}} />
           <p className="text-muted-foreground">Loading dashboard...</p>
         </div>
       </div>
@@ -105,7 +105,7 @@ export default function UserDashboard() {
         <div className="flex items-center justify-between max-w-7xl mx-auto">
           <div className="flex items-center gap-2">
             <img
-              src="https://cdn.builder.io/api/v1/image/assets%2F2fe4f7fd04a545f08056b89b3f633e83%2Fd6db581a27c74d93a3adde635d94c3cf?format=webp&width=800"
+              src="https://cdn.builder.io/api/v1/image/assets%2F2fe4f7fd04a545f08056b89b3f633e83%2Fdba04484f1fb4da0949c0f8e5a34c75b?format=webp&width=800"
               alt="Flow Logo"
               className="h-8 w-8"
             />
@@ -225,7 +225,7 @@ export default function UserDashboard() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Users className="h-5 w-5 text-primary" />
+                  <Users className="h-5 w-5" style={{color: '#C94E5D'}} />
                   Quick Stats
                 </CardTitle>
               </CardHeader>

@@ -128,7 +128,7 @@ export default function VenueAvailability({ onMakeReservation }: VenueAvailabili
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Building2 className="h-5 w-5 text-primary" />
+            <Building2 className="h-5 w-5" style={{color: '#C94E5D'}} />
             Venue Availability
           </CardTitle>
         </CardHeader>
@@ -147,7 +147,7 @@ export default function VenueAvailability({ onMakeReservation }: VenueAvailabili
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Building2 className="h-5 w-5 text-primary" />
+            <Building2 className="h-5 w-5" style={{color: '#C94E5D'}} />
             Venue Availability
           </CardTitle>
         </CardHeader>
@@ -205,7 +205,7 @@ export default function VenueAvailability({ onMakeReservation }: VenueAvailabili
             <div className="text-xs text-muted-foreground">Occupied</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-primary">{availability.totalVenues}</div>
+            <div className="text-2xl font-bold" style={{color: '#C94E5D'}}>{availability.totalVenues}</div>
             <div className="text-xs text-muted-foreground">Total</div>
           </div>
         </div>

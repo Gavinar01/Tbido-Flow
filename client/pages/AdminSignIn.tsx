@@ -9,8 +9,8 @@ import { useToast } from "@/hooks/use-toast";
 import { SigninRequest, AuthResponse } from "@shared/api";
 
 export default function AdminSignIn() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("admin@venuebook.com");
+  const [password, setPassword] = useState("admin123");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -35,20 +35,25 @@ export default function AdminSignIn() {
 
       console.log("Response status:", response.status);
       console.log("Response ok:", response.ok);
+      console.log("Response headers:", Object.fromEntries(response.headers.entries()));
+
+      const responseText = await response.text();
+      console.log("Raw response text:", responseText);
 
       if (!response.ok) {
         let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
         try {
-          const errorData = await response.json();
+          const errorData = JSON.parse(responseText);
           errorMessage = errorData.error || errorMessage;
           console.log("Error data:", errorData);
         } catch (parseError) {
           console.error("Failed to parse error response:", parseError);
+          console.log("Raw response:", responseText);
         }
         throw new Error(errorMessage);
       }
 
-      const authData: AuthResponse = await response.json();
+      const authData: AuthResponse = JSON.parse(responseText);
       console.log("Successful admin signin:", { userId: authData.user.id, isAdmin: authData.user.isAdmin });
 
       // Verify admin role
@@ -92,7 +97,11 @@ export default function AdminSignIn() {
       <header className="w-full px-4 py-3 sm:px-6 sm:py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Building2 className="h-7 w-7 sm:h-8 sm:w-8 text-primary" />
+            <img
+              src="https://cdn.builder.io/api/v1/image/assets%2F2fe4f7fd04a545f08056b89b3f633e83%2Fdba04484f1fb4da0949c0f8e5a34c75b?format=webp&width=800"
+              alt="Flow Logo"
+              className="h-7 w-7 sm:h-8 sm:w-8"
+            />
             <span className="text-xl sm:text-2xl font-bold text-foreground">Flow</span>
           </div>
           <Link to="/">
@@ -110,8 +119,8 @@ export default function AdminSignIn() {
         <div className="w-full max-w-sm sm:max-w-md">
           <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
             <CardHeader className="text-center pb-4 px-4 sm:px-6">
-              <div className="mx-auto w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
-                <Shield className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+              <div className="mx-auto w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center mb-3" style={{backgroundColor: '#C94E5D20'}}>
+                <Shield className="h-5 w-5 sm:h-6 sm:w-6" style={{color: '#C94E5D'}} />
               </div>
               <CardTitle className="text-xl sm:text-2xl font-bold">Admin Portal</CardTitle>
               <CardDescription className="text-sm">

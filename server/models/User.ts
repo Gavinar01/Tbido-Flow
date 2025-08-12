@@ -32,7 +32,7 @@ const UserSchema = new Schema<IUser>({
   password: {
     type: String,
     required: true,
-    minlength: 8
+    minlength: 6
   },
   organization: {
     type: String,
