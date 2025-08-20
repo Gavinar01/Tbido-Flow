@@ -22,7 +22,7 @@ export const getVenueAvailability: RequestHandler = async (req, res) => {
     // Calculate availability for each venue
     const venueAvailability = AVAILABLE_VENUES.map(venue => {
       const venueReservations = reservations.filter(r => r.venue === venue);
-      
+
       if (venueReservations.length === 0) {
         return {
           venue,
@@ -33,20 +33,34 @@ export const getVenueAvailability: RequestHandler = async (req, res) => {
         };
       }
 
-      // Simplified logic to avoid time comparison issues
-      const currentReservation = null; // Temporarily disable current reservation logic
-      let nextAvailable = null;
+      // Check if venue is currently occupied
+      const now = new Date();
+      const currentTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
 
-      // If there are reservations today, show the next one
-      if (venueReservations.length > 0) {
-        nextAvailable = venueReservations[0].startTime;
+      // Find current reservation if any
+      const currentReservation = venueReservations.find(r => {
+        return currentTime >= r.startTime && currentTime <= r.endTime;
+      });
+
+      // Find next available time
+      let nextAvailable = null;
+      if (currentReservation) {
+        nextAvailable = currentReservation.endTime;
+      } else if (venueReservations.length > 0) {
+        // Find next reservation after current time
+        const nextReservation = venueReservations.find(r => r.startTime > currentTime);
+        nextAvailable = nextReservation ? nextReservation.startTime : null;
       }
 
       return {
         venue,
-        status: 'available' as const, // Simplified for debugging
+        status: currentReservation ? 'occupied' as const : 'available' as const,
         nextAvailable,
-        currentReservation: null,
+        currentReservation: currentReservation ? {
+          purpose: currentReservation.purpose,
+          organizer: currentReservation.organizerName,
+          endTime: currentReservation.endTime
+        } : null,
         reservations: venueReservations.map(r => ({
           startTime: r.startTime,
           endTime: r.endTime,

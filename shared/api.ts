@@ -38,6 +38,7 @@ export interface CreateReservationRequest {
   startTime: string; // HH:MM format
   endTime: string; // HH:MM format
   participantCount: number;
+  participantNames?: string[]; // Array of participant names
   organizerName: string;
   organizerOrganization?: string;
 }
@@ -57,6 +58,7 @@ export interface ReservationResponse {
   startTime: string;
   endTime: string;
   participantCount: number;
+  participantNames?: string[]; // Array of participant names
   organizerName: string;
   organizerOrganization?: string;
   status: 'confirmed' | 'cancelled' | 'completed';
@@ -80,14 +82,7 @@ export interface ErrorResponse {
 
 // Available venues (can be expanded later)
 export const AVAILABLE_VENUES = [
-  'Conference Room A',
-  'Conference Room B',
-  'Main Auditorium',
-  'Meeting Room 1',
-  'Meeting Room 2',
-  'Board Room',
-  'Training Room',
-  'Event Hall'
+  '4th Flr. NALLRC Office'
 ] as const;
 
 export type VenueType = typeof AVAILABLE_VENUES[number];

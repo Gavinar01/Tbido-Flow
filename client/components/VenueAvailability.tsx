@@ -71,9 +71,7 @@ export default function VenueAvailability({ onMakeReservation }: VenueAvailabili
 
   const setAvailabilityFallback = () => {
     const VENUES = [
-      'Conference Room A', 'Conference Room B', 'Main Auditorium',
-      'Meeting Room 1', 'Meeting Room 2', 'Board Room',
-      'Training Room', 'Event Hall'
+      '4th Flr. NALLRC Office'
     ];
 
     const fallbackData: VenueAvailabilityResponse = {

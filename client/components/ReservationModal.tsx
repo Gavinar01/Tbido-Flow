@@ -26,6 +26,7 @@ export default function ReservationModal({ open, onOpenChange, onReservationCrea
   const [venue, setVenue] = useState("");
   const [purpose, setPurpose] = useState("");
   const [participantCount, setParticipantCount] = useState(1);
+  const [participantNames, setParticipantNames] = useState<string[]>(['']);
   const [organizerName, setOrganizerName] = useState("");
   const [organizerOrganization, setOrganizerOrganization] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -54,6 +55,31 @@ export default function ReservationModal({ open, onOpenChange, onReservationCrea
   };
 
   const timeOptions = generateTimeOptions();
+
+  // Handle participant count changes and update names array
+  const handleParticipantCountChange = (count: number) => {
+    setParticipantCount(count);
+
+    // Adjust participant names array
+    const newNames = [...participantNames];
+    if (count > newNames.length) {
+      // Add empty strings for new participants
+      for (let i = newNames.length; i < count; i++) {
+        newNames.push('');
+      }
+    } else if (count < newNames.length) {
+      // Remove excess names
+      newNames.splice(count);
+    }
+    setParticipantNames(newNames);
+  };
+
+  // Handle individual participant name changes
+  const handleParticipantNameChange = (index: number, name: string) => {
+    const newNames = [...participantNames];
+    newNames[index] = name;
+    setParticipantNames(newNames);
+  };
 
   const validateTimeRange = () => {
     if (!startTime || !endTime) return true;
@@ -100,6 +126,7 @@ export default function ReservationModal({ open, onOpenChange, onReservationCrea
         startTime,
         endTime,
         participantCount,
+        participantNames: participantNames.filter(name => name.trim() !== ''), // Filter out empty names
         organizerName,
         organizerOrganization: organizerOrganization || undefined,
       };
@@ -138,6 +165,7 @@ export default function ReservationModal({ open, onOpenChange, onReservationCrea
       setVenue("");
       setPurpose("");
       setParticipantCount(1);
+      setParticipantNames(['']);
       setOrganizerName("");
       setOrganizerOrganization("");
 
@@ -303,9 +331,37 @@ export default function ReservationModal({ open, onOpenChange, onReservationCrea
               min="1"
               max="20"
               value={participantCount}
-              onChange={(e) => setParticipantCount(Math.min(20, Math.max(1, parseInt(e.target.value) || 1)))}
+              onChange={(e) => handleParticipantCountChange(Math.min(20, Math.max(1, parseInt(e.target.value) || 1)))}
             />
           </div>
+
+          {/* Participant Names */}
+          {participantCount > 0 && (
+            <div className="space-y-3">
+              <Label className="flex items-center gap-2">
+                <Users className="h-4 w-4" />
+                Participant Names (Fill up to {participantCount} participants)
+              </Label>
+              <div className="grid gap-3 max-h-40 overflow-y-auto p-2 border rounded-lg bg-muted/50">
+                {Array.from({ length: participantCount }, (_, index) => (
+                  <div key={index} className="flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground w-8 flex-shrink-0">
+                      {index + 1}.
+                    </span>
+                    <Input
+                      placeholder={index === 0 ? "Organizer (you)" : `Participant ${index + 1} name`}
+                      value={participantNames[index] || ''}
+                      onChange={(e) => handleParticipantNameChange(index, e.target.value)}
+                      className="flex-1"
+                    />
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                💡 Tip: Leave empty for participants whose names are unknown. You can add them later.
+              </p>
+            </div>
+          )}
 
           {/* Submit Buttons */}
           <div className="flex gap-4 pt-4">

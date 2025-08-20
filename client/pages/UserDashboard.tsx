@@ -7,12 +7,14 @@ import { useToast } from "@/hooks/use-toast";
 import { GetReservationsResponse } from "@shared/api";
 import ReservationModal from "@/components/ReservationModal";
 import VenueAvailability from "@/components/VenueAvailability";
+import UserSettings from "@/components/UserSettings";
 
 export default function UserDashboard() {
   const [user, setUser] = useState<any>(null);
   const [reservations, setReservations] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isReservationModalOpen, setIsReservationModalOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -105,7 +107,7 @@ export default function UserDashboard() {
         <div className="flex items-center justify-between max-w-7xl mx-auto">
           <div className="flex items-center gap-2">
             <img
-              src="https://cdn.builder.io/api/v1/image/assets%2F2fe4f7fd04a545f08056b89b3f633e83%2Fdba04484f1fb4da0949c0f8e5a34c75b?format=webp&width=800"
+              src="https://cdn.builder.io/api/v1/image/assets%2F2fe4f7fd04a545f08056b89b3f633e83%2Fd6db581a27c74d93a3adde635d94c3cf?format=webp&width=800"
               alt="Flow Logo"
               className="h-8 w-8"
             />
@@ -115,7 +117,7 @@ export default function UserDashboard() {
             <span className="text-sm text-muted-foreground hidden sm:inline">
               Welcome, {user?.firstName}!
             </span>
-            <Button variant="ghost" size="sm" className="gap-2" onClick={() => toast({ title: "Settings", description: "Settings panel coming soon!" })}>
+            <Button variant="ghost" size="sm" className="gap-2" onClick={() => setIsSettingsOpen(true)}>
               <Settings className="h-4 w-4" />
               Settings
             </Button>
@@ -283,6 +285,17 @@ export default function UserDashboard() {
         open={isReservationModalOpen}
         onOpenChange={setIsReservationModalOpen}
         onReservationCreated={handleReservationCreated}
+      />
+
+      {/* User Settings Modal */}
+      <UserSettings
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        user={user}
+        onUserUpdate={(updatedUser) => {
+          setUser(updatedUser);
+          localStorage.setItem("user", JSON.stringify(updatedUser));
+        }}
       />
     </div>
   );

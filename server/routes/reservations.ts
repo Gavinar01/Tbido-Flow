@@ -15,6 +15,7 @@ export const createReservation: RequestHandler = async (req: AuthRequest, res) =
       startTime,
       endTime,
       participantCount,
+      participantNames,
       organizerName,
       organizerOrganization
     } = req.body;
@@ -61,6 +62,7 @@ export const createReservation: RequestHandler = async (req: AuthRequest, res) =
       startTime,
       endTime,
       participantCount,
+      participantNames: participantNames || [],
       organizerName,
       organizerOrganization,
       status: 'confirmed'

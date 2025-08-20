@@ -10,6 +10,8 @@ import {
   updateReservationStatus,
   getReservationsByDate
 } from "./routes/reservations";
+import { updateProfile, changePassword, getProfile } from "./routes/users";
+import { getVenueAvailability, getVenueSchedule } from "./routes/venues";
 // import { getVenueAvailability, getVenueSchedule } from "./routes/venues";
 import { authenticateUser, requireAdmin } from "./lib/auth";
 import { connectToDatabase } from "./lib/database";
@@ -38,101 +40,6 @@ export function createServer() {
     res.json({ message: "Venue API is working", timestamp: new Date().toISOString() });
   });
 
-  // Venue availability endpoint with real reservation checking
-  app.get("/api/venues/availability", authenticateUser, async (req, res) => {
-    try {
-      await connectToDatabase();
-
-      const AVAILABLE_VENUES = [
-        'Conference Room A',
-        'Conference Room B',
-        'Main Auditorium',
-        'Meeting Room 1',
-        'Meeting Room 2',
-        'Board Room',
-        'Training Room',
-        'Event Hall'
-      ];
-
-      const { date } = req.query;
-      const targetDate = date ? new Date(date as string) : new Date();
-
-      console.log('Venue availability request for date:', targetDate.toDateString());
-      console.log('Query date parameter:', date);
-      console.log('Target date ISO:', targetDate.toISOString());
-      console.log('Today ISO:', new Date().toISOString());
-
-      // Import models dynamically to avoid compilation issues
-      const models = await import('./models/Reservation');
-      const Reservation = models.Reservation;
-
-      const reservations = await Reservation.find({
-        date: {
-          $gte: new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate()),
-          $lt: new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate() + 1)
-        },
-        status: 'confirmed'
-      }).sort({ startTime: 1 });
-
-      console.log(`✅ Found ${reservations.length} reservations for ${targetDate.toDateString()}`);
-
-      // Calculate availability for each venue
-      const venues = AVAILABLE_VENUES.map(venue => {
-        const venueReservations = reservations.filter(r => r.venue === venue);
-
-        if (venueReservations.length === 0) {
-          return {
-            venue,
-            status: 'available',
-            nextAvailable: null,
-            currentReservation: null,
-            reservations: []
-          };
-        }
-
-        // Check if venue is currently occupied (simplified logic)
-        const now = new Date();
-        const currentTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-
-        // For simplicity, if it's the same day and has reservations, show when next available
-        const nextReservation = venueReservations[0];
-        const isCurrentlyOccupied = venueReservations.some(r => {
-          return currentTime >= r.startTime && currentTime <= r.endTime;
-        });
-
-        return {
-          venue,
-          status: isCurrentlyOccupied ? 'occupied' : 'available',
-          nextAvailable: isCurrentlyOccupied ?
-            venueReservations.find(r => currentTime >= r.startTime && currentTime <= r.endTime)?.endTime :
-            nextReservation.startTime,
-          currentReservation: isCurrentlyOccupied ? {
-            purpose: venueReservations.find(r => currentTime >= r.startTime && currentTime <= r.endTime)?.purpose || 'Meeting',
-            organizer: venueReservations.find(r => currentTime >= r.startTime && currentTime <= r.endTime)?.organizerName || 'Unknown',
-            endTime: venueReservations.find(r => currentTime >= r.startTime && currentTime <= r.endTime)?.endTime || ''
-          } : null,
-          reservations: venueReservations.map(r => ({
-            startTime: r.startTime,
-            endTime: r.endTime,
-            purpose: r.purpose,
-            organizer: r.organizerName
-          }))
-        };
-      });
-
-      const availableCount = venues.filter(v => v.status === 'available').length;
-
-      res.json({
-        date: targetDate.toISOString().split('T')[0],
-        venues,
-        totalVenues: AVAILABLE_VENUES.length,
-        availableVenues: availableCount
-      });
-    } catch (error) {
-      console.error('Venue availability error:', error);
-      res.status(500).json({ error: 'Internal server error' });
-    }
-  });
 
   // Authentication routes
   app.post("/api/auth/signup", signup);
@@ -144,9 +51,14 @@ export function createServer() {
   app.get("/api/reservations/my", authenticateUser, getUserReservations);
   app.get("/api/reservations/date/:date", authenticateUser, getReservationsByDate);
 
-  // Venue availability routes (temporarily disabled for debugging)
-  // app.get("/api/venues/availability", authenticateUser, getVenueAvailability);
-  // app.get("/api/venues/:venue/schedule", authenticateUser, getVenueSchedule);
+  // User profile routes
+  app.get("/api/user/profile", authenticateUser, getProfile);
+  app.put("/api/user/profile", authenticateUser, updateProfile);
+  app.put("/api/user/change-password", authenticateUser, changePassword);
+
+  // Venue availability routes
+  app.get("/api/venues/availability", authenticateUser, getVenueAvailability);
+  app.get("/api/venues/:venue/schedule", authenticateUser, getVenueSchedule);
 
   // Protected admin routes
   app.get("/api/admin/reservations", authenticateUser, requireAdmin, getAllReservations);

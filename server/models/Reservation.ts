@@ -8,6 +8,7 @@ export interface IReservation extends Document {
   startTime: string;
   endTime: string;
   participantCount: number;
+  participantNames?: string[];
   organizerName: string;
   organizerOrganization?: string;
   status: 'confirmed' | 'cancelled' | 'completed';
@@ -73,6 +74,18 @@ const ReservationSchema = new Schema<IReservation>({
     validate: {
       validator: Number.isInteger,
       message: 'Participant count must be a whole number'
+    }
+  },
+  participantNames: {
+    type: [String],
+    required: false,
+    default: [],
+    validate: {
+      validator: function(names: string[]) {
+        // Validate that there are not more names than participant count
+        return names.length <= (this as any).participantCount;
+      },
+      message: 'Number of participant names cannot exceed participant count'
     }
   },
   organizerName: {

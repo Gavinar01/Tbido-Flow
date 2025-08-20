@@ -71,7 +71,7 @@ export default function SignIn() {
       <header className="w-full px-4 py-3 sm:px-6 sm:py-4">
         <div className="flex items-center justify-center sm:justify-start gap-2">
           <img
-            src="https://cdn.builder.io/api/v1/image/assets%2F2fe4f7fd04a545f08056b89b3f633e83%2Fdba04484f1fb4da0949c0f8e5a34c75b?format=webp&width=800"
+            src="https://cdn.builder.io/api/v1/image/assets%2F2fe4f7fd04a545f08056b89b3f633e83%2Fd6db581a27c74d93a3adde635d94c3cf?format=webp&width=800"
             alt="Flow Logo"
             className="h-7 w-7 sm:h-8 sm:w-8"
           />

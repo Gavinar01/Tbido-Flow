@@ -12,6 +12,10 @@ import SignUp from "./pages/SignUp";
 import UserDashboard from "./pages/UserDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
+import { suppressResizeObserverError } from "@/lib/resize-observer-error-handler";
+
+// Suppress ResizeObserver errors on app initialization
+suppressResizeObserverError();
 
 const queryClient = new QueryClient();
 
